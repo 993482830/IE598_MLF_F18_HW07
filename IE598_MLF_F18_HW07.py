@@ -27,19 +27,19 @@ X_train, X_test, y_train, y_test = \
                      stratify=y,
                      random_state=42)
     
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import RandomForestClassifier
 #from sklearn import metrics
 from sklearn.model_selection import cross_val_score
 import timeit
 SEED = 1
-rf = RandomForestRegressor(random_state= SEED)
+rf = RandomForestClassifier(random_state= SEED)
 rf.get_params()
 
 scores=[]
 a=[100,200,300,400]
 for i in a:
     start = timeit.default_timer()
-    rf = RandomForestRegressor(n_estimators=i, min_samples_leaf=0.12,
+    rf = RandomForestClassifier(n_estimators=i, min_samples_leaf=0.12,
     random_state=SEED)
     rf.fit(X_train, y_train)
     y_train_pred = rf.predict(X_train)
@@ -67,15 +67,10 @@ forest.fit(X_train, y_train)
 importances = forest.feature_importances_
 indices = np.argsort(importances)[::-1]
 for f in range(X_train.shape[1]):
-    print("%2d) %-*s %f" % (f + 1, 30,
-                        feat_labels[indices[f]],
-                        importances[indices[f]]))
+    print("%2d) %-*s %f" % (f + 1, 30, feat_labels[indices[f]], importances[indices[f]]))
 plt.title('Feature Importance')
-plt.bar(range(X_train.shape[1]),
-         importances[indices],
-         align='center')
-plt.xticks(range(X_train.shape[1]),
-               feat_labels, rotation=90)
+plt.bar(range(X_train.shape[1]), importances[indices], align='center')
+plt.xticks(range(X_train.shape[1]), feat_labels[indices], rotation=90)
 plt.xlim([-1, X_train.shape[1]])
 plt.tight_layout()
 plt.show()
